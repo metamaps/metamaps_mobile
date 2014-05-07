@@ -14,7 +14,6 @@ add a topic view
 String.prototype.lines = function() { return this.split(/\r*\n/); }
 String.prototype.lineCount = function() { return this.lines().length; }
 
-
 /* globals define */
 define(function(require, exports, module) {
     'use strict';
@@ -37,7 +36,7 @@ define(function(require, exports, module) {
     
     var logo = new Surface({
        size: [96, 96],
-       content: '<img src="/content/images/map.png" width="96" />',
+       content: '<img src="content/images/map.png" width="96" />',
        classes: ['backfaceVisibility']
     });
 

@@ -51,10 +51,10 @@ define(function(require, exports, module) {
             var metacode = self.app.metacodes.get(topic.get('metacode_id'));
             
             content  = '<div class="list-item">'
-            content += '<img class="list-icon" width="30" src="/content/images/' + metacode.get('icon') + '" />';
+            content += '<img class="list-icon" width="30" src="content/images/' + metacode.get('icon') + '" />';
             content += '<div class="list-subject">' + topic.get('name') + '</div>';
             content += '<span class="list-type">' + metacode.get('name') + '</span>';
-            content += '<img class="list-arrow" width="20" src="/content/images/arrow-icon.png" />';
+            content += '<img class="list-arrow" width="20" src="content/images/arrow-icon.png" />';
             content += '</div>';
             return content;
           }

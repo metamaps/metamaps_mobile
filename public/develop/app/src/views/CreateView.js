@@ -7,24 +7,34 @@ define(function(require, exports, module) {
     var Time       = require('famous/utilities/Timer');
     var InputSurface = require('famous/surfaces/InputSurface');
 
-    function FilterView() {
+    function CreateView(app) {
         View.apply(this, arguments);
 
+        this.app = app;
+        
         _createBackground.call(this);
         _createInput.call(this);
-        _createStrips.call(this);
         
-        this.reset();
+        this.app.metacodes.fetch({
+            success: function(collection, response, options) {
+               _metacodesFetched(this, collection); 
+            }.bind(this)
+        });
+        
+        
     }
 
-    FilterView.prototype = Object.create(View.prototype);
-    FilterView.prototype.constructor = FilterView;
+    CreateView.prototype = Object.create(View.prototype);
+    CreateView.prototype.constructor = CreateView;
 
-    FilterView.DEFAULT_OPTIONS = {
-        duration: null
+    CreateView.DEFAULT_OPTIONS = {
+        duration: 300
     };
 
-    
+    function _metacodesFetched(that, collection) {
+        _createStrips.call(that);
+        that.reset();
+    }
     
     //
     // the goal of this View is to provide two variables: this.inputValue, which is the text for the title of a new topic,
@@ -101,19 +111,29 @@ define(function(require, exports, module) {
 
         grid.sequenceFrom(surfaces);
 
+        var metacodesToUse = ["Question",'Wildcard','Idea','Con','Argument','Pro','Experience','Foresight','Good Practice'];
+        var metacodes = [];
+        
+        var collection = self.app.metacodes;
+        for (var i = 0; i < metacodesToUse.length; i++){
+            var m = collection.findWhere({ name: metacodesToUse[i] });
+            metacodes.push(m);
+        };
+        console.log(metacodes);
+        /*
         var iconContents = [
-            {text: 'QUESTION', imageUrl: '/content/images/question-icon.png', available: true, input: "What's your question?"},
-            {text: 'WILDCARD', imageUrl: '/content/images/wildcard-icon.png', available: true, input: 'Type here...'},
-            {text: 'IDEA', imageUrl: '/content/images/idea-icon.png', available: true, input: "What's your idea?"},
+            {text: 'QUESTION', imageUrl: 'content/images/question-icon.png', available: true, input: "What's your question?"},
+            {text: 'WILDCARD', imageUrl: 'content/images/wildcard-icon.png', available: true, input: 'Type here...'},
+            {text: 'IDEA', imageUrl: 'content/images/idea-icon.png', available: true, input: "What's your idea?"},
 
-            {text: 'CON', imageUrl: '/content/images/con-icon.png', available: true, input: 'Challenge!'},
-            {text: 'ARGUMENT', imageUrl: '/content/images/argument-icon.png', available: true, input: 'Offer perspective'},
-            {text: 'PRO', imageUrl: '/content/images/pro-icon.png', available: true, input: 'Support!'},
+            {text: 'CON', imageUrl: 'content/images/con-icon.png', available: true, input: 'Challenge!'},
+            {text: 'ARGUMENT', imageUrl: 'content/images/argument-icon.png', available: true, input: 'Offer perspective'},
+            {text: 'PRO', imageUrl: 'content/images/pro-icon.png', available: true, input: 'Support!'},
             
-            {text: 'EXPERIENCE', imageUrl: '/content/images/experience-icon.png', available: true, input: 'Relate an experience'},
-            {text: 'PREDICTION', imageUrl: '/content/images/prediction-icon.png', available: true, input: 'Offer a prediction'},
-            {text: 'LEARNING', imageUrl: '/content/images/learning-icon.png', available: true, input: 'Share a learning'},
-        ];
+            {text: 'EXPERIENCE', imageUrl: 'content/images/experience-icon.png', available: true, input: 'Relate an experience'},
+            {text: 'PREDICTION', imageUrl: 'content/images/prediction-icon.png', available: true, input: 'Offer a prediction'},
+            {text: 'LEARNING', imageUrl: 'content/images/learning-icon.png', available: true, input: 'Share a learning'},
+        ];*/
 
         this.rowModifiers = [];
         var contentCounter = 0;
@@ -131,19 +151,19 @@ define(function(require, exports, module) {
                     origin: [0.5, 0.5]
                 });
                 
-                type = iconContents[contentCounter];
+                metacode = metacodes[contentCounter];
                 //create surface from iconContents
-                availability = type.available ? 'available' : 'unavailable';
+                //availability = type.available ? 'available' : 'unavailable';
 
                 surf = new Surface({
                     size: [undefined,undefined],
                     classes: ['filterIcon'],
-                    content: '<img class="filterIconImg" width="' + scaledWidth + '" src="'+ type.imageUrl +'"/>'+
-                                '<div class="filterIconText '+ availability +'">' + type.text +'</div>',
+                    content: '<img class="filterIconImg" width="' + scaledWidth + '" src="content/images/'+ metacode.get('icon') +'"/>'+
+                                '<div class="filterIconText available">' + metacode.get('name').toUpperCase() +'</div>',
                 });
                 surf.index = (row * 3) + col;
-                surf.typeText = type.text.toLowerCase();
-                surf.suggestText = type.input;
+                surf.typeText = metacode.get('name');
+                surf.suggestText = 'Type here...'; // type.input;
                 
                 modIndex = (row * 3) + col;
                 surf.on('touchstart', function() {
@@ -168,7 +188,7 @@ define(function(require, exports, module) {
         this._add(gridMod).add(grid);
     }
 
-    FilterView.prototype.animate = function() {
+    CreateView.prototype.animate = function() {
         this.reset();
 
         this.inputMod.setTransform(
@@ -218,7 +238,7 @@ define(function(require, exports, module) {
         }).bind(this), this.options.duration - 200);
     }
 
-    FilterView.prototype.reset = function() {
+    CreateView.prototype.reset = function() {
         this.inputMod.setTransform(Transform.translate(0, 0, 0));
         this.inputSurf.setValue("");
         this.inputValue = "";
@@ -237,7 +257,7 @@ define(function(require, exports, module) {
         }
     }
     
-    FilterView.prototype.selectMetacode = function(modIndex, type, text) {
+    CreateView.prototype.selectMetacode = function(modIndex, type, text) {
         this.inputSurf.setPlaceholder(text);
         if (this.inputValue !== "") {
             this._eventOutput.emit('canCreateTopic');
@@ -262,5 +282,5 @@ define(function(require, exports, module) {
         }
     }
 
-    module.exports = FilterView;
+    module.exports = CreateView;
 });

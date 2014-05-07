@@ -15,7 +15,7 @@ module.exports = function(grunt) {
       config: {
         // Configurable paths
         app: 'app',
-        dist: '../public'
+        dist: '..' // directly in the public folder
       }
     }
   });

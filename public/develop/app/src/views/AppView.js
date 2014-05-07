@@ -112,9 +112,7 @@ define(function(require, exports, module) {
     }
 
     function _createCreateView() {
-        this.createView = new CreateView({
-            duration: this.options.transition.duration
-        });
+        this.createView = new CreateView(this);
         this.createView.on('canCreateTopic', this.menuBarView.enableCreate.bind(this.menuBarView));
         this.createView.on('cantCreateTopic', this.menuBarView.disableCreate.bind(this.menuBarView));
         this._add(this.createView);
@@ -324,17 +322,19 @@ define(function(require, exports, module) {
     
     AppView.prototype.addTopic = function() {
         var newTopic = {};
-        newTopic.title = this.createView.inputValue;
-        newTopic.metacode = this.createView.selectedMetacode;
-        newTopic.author = 'poietic';
-        newTopic.description = '';
-        newTopic.synapses = 8;
+        var metacode = this.metacodes.findWhere({ name: this.createView.selectedMetacode });
+        
+        newTopic.name = this.createView.inputValue;
+        newTopic.metacode_id = metacode.get('id');
+        newTopic.user_id = 1234;
+        newTopic.desc = '';
         
         var topic = new this.Topic(newTopic);
         
         var activeMapTopics = this.activeMap.get('topics');
         // this line adds it to the backbone topic collection
         activeMapTopics.add(topic);
+        this.topicListView.addTopic(topic);
         
         this.slideCreateUp.call(this, function() {
             this.createView.reset();

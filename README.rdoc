@@ -1,14 +1,19 @@
 == Metamaps Mobile!
 
 While in cloud9
-mysql-ctl start
+
 rails s -b $IP -p $PORT
 
+to view test version
+/develop/app/index.html
+
+to view dist version
+/
 
 
 to compile: 
-cd develop
-grunt --force
+cd public/develop
+grunt
 
 
 

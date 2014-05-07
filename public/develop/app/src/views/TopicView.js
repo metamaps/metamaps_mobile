@@ -191,20 +191,20 @@ define(function(require, exports, module) {
       this.activeTopic = topic;
       
       var metacode = this.app.metacodes.get(topic.get('metacode_id'));
-      this.metacodeSurface.setContent('<img width="96" src="/content/images/' + metacode.get('icon') + '" />');
+      this.metacodeSurface.setContent('<img width="96" src="content/images/' + metacode.get('icon') + '" />');
       
       this.titleSurface.setValue(topic.get('name'));
       
       this.metadataSurface.setContent(
         '<div class="topicAuthor">' +
-            '<div class="topicImageWrapper"><img width="30" src="/content/images/mapper.png" /></div>' +
+            '<div class="topicImageWrapper"><img width="30" src="content/images/mapper.png" /></div>' +
             '<div class="topicTextWrapper">' +
             'Created by:<br>' +
             topic.get('user_id') +
             '</div>' +
         '</div>' +
         '<div class="topicSynapses">' +
-            '<div class="topicImageWrapper"><img width="30" src="/content/images/synapse.png" /></div>' +
+            '<div class="topicImageWrapper"><img width="30" src="content/images/synapse.png" /></div>' +
             '<div class="topicTextWrapper">' +
             'Synapses:<br>' +
             '8' +

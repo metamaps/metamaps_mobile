@@ -34,7 +34,7 @@ define(function(require, exports, module) {
         //x-icon
         this.xIconSurf = new Surface({
             size: [40,40],
-            content: '<img width="40" src="/content/images/x-icon.png"/>',
+            content: '<img width="40" src="content/images/x-icon.png"/>',
             properties: {
                 paddingTop: '0.4px',
                 paddingLeft: '2.6px'
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
         //back-icon
         this.backIconSurf = new Surface({
             size: [40,40],
-            content: '<img width="40" src="/content/images/arrow-icon-back.png"/>',
+            content: '<img width="40" src="content/images/arrow-icon-back.png"/>',
             properties: {
                 paddingTop: '0.4px',
                 paddingLeft: '2.6px'
@@ -79,7 +79,7 @@ define(function(require, exports, module) {
         //question icon
         this.checkmarkIconSurf = new Surface({
             size: [40,40],
-            content: '<img width="34" src="/content/images/checkmark.png"/>',
+            content: '<img width="34" src="content/images/checkmark.png"/>',
             properties: {
                 paddingTop: '5px',
                 paddingRight: '30px'

@@ -42,10 +42,10 @@ define(function(require, exports, module) {
         var self = this;
           var content;
           content  = '<div class="list-item">'
-          content += '<img class="list-icon" width="30" src="/content/images/map.png" />';
+          content += '<img class="list-icon" width="30" src="content/images/map.png" />';
           content += '<div class="list-subject">' + map.get('name') + '</div>';
           content += '<span class="list-type">map</span>';
-          content += '<img class="list-arrow" width="20" src="/content/images/arrow-icon.png" />';
+          content += '<img class="list-arrow" width="20" src="content/images/arrow-icon.png" />';
           content += '</div>';
 
           var surface = new Surface({

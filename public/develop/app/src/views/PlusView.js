@@ -22,7 +22,7 @@ define(function(require, exports, module) {
 	function _createPlus(){
 	  this.plusSurf = new Surface({
 	    size: [window.innerHeight / 8, window.innerHeight / 8],
-	    content: '<img height='+window.innerHeight / 8+' width'+window.innerHeight / 8+' src="/content/images/addtopic.png"/>'
+	    content: '<img height='+window.innerHeight / 8+' width'+window.innerHeight / 8+' src="content/images/addtopic.png"/>'
 	  });
 
       var draggable = new Draggable();
