@@ -10,7 +10,7 @@ Devise.setup do |config|
   # config.mailer = "Devise::Mailer"
   
   if Rails.env.production?
-    #config.secret_key = 'd91ba0da95749174ee2b8922034783cbde4945409ed28b13383e18e72844beb74467f8199e9e216f0687cd2290c6e46bf74da24486d14bba3671d76c5b10c753'
+    config.secret_key = 'dd2bf8b1fbb3e1c0f2ae853ef4fa1239af3ec7c4bf68a5b647b6ae294c7a6a313e1c3132bfd5078a515c407d1b46257a66eabab7a6913f2b2ea17b2cca28011e'
   end
     
   # ==> ORM configuration

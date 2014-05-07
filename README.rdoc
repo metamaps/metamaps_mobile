@@ -4,6 +4,8 @@ While in cloud9
 
 rails s -b $IP -p $PORT
 
+heroku config:add DATABASE_URL=postgres://tuwkjxqeyazkuj:kYd8RwJyOmybL_SGy7cV6Fh8xf@ec2-54-243-194-227.compute-1.amazonaws.com:5432/d1o331hk10a4g1 --app mm-famous
+
 to view test version
 /develop/app/index.html
 
