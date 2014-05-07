@@ -1,3 +1,18 @@
+== Metamaps Mobile!
+
+While in cloud9
+mysql-ctl start
+rails s -b $IP -p $PORT
+
+
+
+to compile: 
+cd develop
+grunt --force
+
+
+
+
 == Metamaps
 Metamaps is a free and open source technology for changemakers, innovators, educators and students. It enables individuals and communities to build and visualize their shared knowledge and unlock their collective intelligence. You can find out about more about the project at http://blog.metamaps.cc.
 

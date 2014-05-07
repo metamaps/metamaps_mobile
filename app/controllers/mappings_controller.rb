@@ -1,67 +1,75 @@
 class MappingsController < ApplicationController
-  respond_to :js, :html
-
-  # GET mappings
+  # GET /mappings
+  # GET /mappings.json
   def index
-  end
+    @mappings = Mapping.all
 
-  # GET mappings/new
-  def new
-    @mapping = Mapping.new
-    @user = current_user
-    respond_with(@mapping)
-  end
-
-  # POST mappings
-  def create
-    @user = current_user
-    if @user
-      @mapping = Mapping.new()
-
-      @mapping.user = @user
-      @mapping.xloc = params[:xloc] if params[:xloc]
-      @mapping.yloc = params[:yloc] if params[:yloc]
-
-      if params[:map]
-        if params[:map][:id]
-          @map = Map.find(params[:map][:id])
-          @map.touch(:updated_at)
-          @mapping.map = @map
-        end
-      end
-      if params[:topic]
-        if params[:topic][:id]
-          @topic = Topic.find(params[:topic][:id])
-          @mapping.topic = @topic
-          @mapping.category = "Topic"
-        end
-      elsif params[:synapse]
-        if params[:synapse][:id]
-          @topic = Synapse.find(params[:synapse][:id])
-          @mapping.synapse = @synapse
-          @mapping.category = "Synapse"
-        end
-      end
-      @mapping.save()
-      
-      #push add to map to realtime viewers of the map
-      @mapping.message 'create',@user.id
+    respond_to do |format|
+      format.json { render json: @mappings }
     end
   end
 
-  # GET /mappings/:id
+  # GET /mappings/1
+  # GET /mappings/1.json
   def show
+    @mapping = Mapping.find(params[:id])
+
+    respond_to do |format|
+      format.json { render json: @mapping }
+    end
   end
 
-  # GET /mappings/:id/edit
+  # GET /mappings/new
+  # GET /mappings/new.json
+  def new
+    @mapping = Mapping.new
+
+    respond_to do |format|
+      format.json { render json: @mapping }
+    end
+  end
+
+  # GET /mappings/1/edit
   def edit
+    @mapping = Mapping.find(params[:id])
   end
 
-  # PUT /mappings/:id
+  # POST /mappings
+  # POST /mappings.json
+  def create
+    @mapping = Mapping.new(params[:mapping])
+
+    respond_to do |format|
+      if @mapping.save
+        format.json { render json: @mapping, status: :created, location: @mapping }
+      else
+        format.json { render json: @mapping.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /mappings/1
+  # PUT /mappings/1.json
   def update
+    @mapping = Mapping.find(params[:id])
+
+    respond_to do |format|
+      if @mapping.update_attributes(params[:mapping])
+        format.json { head :no_content }
+      else
+        format.json { render json: @mapping.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
-  # DELETE /mappings/:id
+  # DELETE /mappings/1
+  # DELETE /mappings/1.json
   def destroy
+    @mapping = Mapping.find(params[:id])
+    @mapping.destroy
+
+    respond_to do |format|
+      format.json { head :no_content }
+    end
   end
 end
