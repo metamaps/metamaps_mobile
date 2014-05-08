@@ -119,7 +119,6 @@ define(function(require, exports, module) {
             var m = collection.findWhere({ name: metacodesToUse[i] });
             metacodes.push(m);
         };
-        console.log(metacodes);
         /*
         var iconContents = [
             {text: 'QUESTION', imageUrl: 'content/images/question-icon.png', available: true, input: "What's your question?"},

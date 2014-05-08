@@ -59,10 +59,21 @@ define(function(require, exports, module) {
           model: this.Metacode,
           url: '/metacodes'
         });
+        
         this.metacodes = new MetacodeCollection();
         this.metacodes.fetch();
         
         this.Topic = Backbone.Model.extend({
+            urlRoot: '/topics',
+            initialize: function() {
+                this.set({
+                    "user_id": 110237153,
+                    "desc": '',
+                    "link": '',
+                    "permission": 'commons'
+                });
+            }
+            
         });
         
         var TopicCollection = Backbone.Collection.extend({
@@ -71,6 +82,7 @@ define(function(require, exports, module) {
         });
         
         this.Map = Backbone.Model.extend({
+            urlRoot: '/maps'
         });
         
         var MapCollection = Backbone.Collection.extend({
@@ -95,6 +107,34 @@ define(function(require, exports, module) {
         });
         
         this.maps.fetch();
+        
+        
+        /*
+        this is the json for a 'mapping'
+        {
+        "category": "Topic",
+        "created_at": "2014-01-29T04:57:20Z",
+        "id": 23,
+        "map_id": 3,
+        "synapse_id": null,
+        "topic_id": 7,
+        "updated_at": "2014-03-02T04:20:44Z",
+        "user_id": 110237153,
+        "xloc": 45,
+        "yloc": -65
+        }*/
+        
+        this.Mapping = Backbone.Model.extend({
+            urlRoot: '/mappings',
+            initialize: function() {
+                this.set({
+                    "xloc": 0,
+                    "yloc": 0,
+                    "user_id": 110237153,
+                    "category": "Topic",
+                });
+            }
+        });
     }
     
     function _createMenuBarView() {
@@ -321,15 +361,25 @@ define(function(require, exports, module) {
     
     
     AppView.prototype.addTopic = function() {
+        var self = this;
+        
         var newTopic = {};
-        var metacode = this.metacodes.findWhere({ name: this.createView.selectedMetacode });
+        var metacode = this.metacodes.findWhere({ name: this.createView.selectedMetacode }); // e.g. "Idea"
         
         newTopic.name = this.createView.inputValue;
         newTopic.metacode_id = metacode.get('id');
-        newTopic.user_id = 1234;
-        newTopic.desc = '';
         
         var topic = new this.Topic(newTopic);
+        
+        topic.save(null, {
+            success: function(model){  
+                var mapping = new self.Mapping({
+                    map_id: self.activeMap.id,
+                    topic_id: model.id
+                });
+                mapping.save();
+            }
+        });
         
         var activeMapTopics = this.activeMap.get('topics');
         // this line adds it to the backbone topic collection

@@ -2,22 +2,42 @@
 
 While in cloud9
 
+TO VIEW TEST VERSION, AND DO DEVELOPMENT
+run in a terminal (open one with alt+t)->
 rails s -b $IP -p $PORT
 
-heroku config:add DATABASE_URL=postgres://tuwkjxqeyazkuj:kYd8RwJyOmybL_SGy7cV6Fh8xf@ec2-54-243-194-227.compute-1.amazonaws.com:5432/d1o331hk10a4g1 --app mm-famous
+navigate to->
+https://metamaps_gen002-c9-connoropolous.c9.io/develop/app/index.html
 
-to view test version
-/develop/app/index.html
+develop all client files in /public/develop/app/views, when you code these files, just hit refresh at this url to test
+https://metamaps_gen002-c9-connoropolous.c9.io/develop/app/index.html
+develop server files in /app/controllers, and /app/models, /config/routes.rb
+don't touch anything else.
 
-to view dist version
-/
 
+TO VIEW & TEST PRODUCTION VERSION
+run in a terminal ->
+rails s -b $IP -p $PORT
+navigate to->
+https://metamaps_gen002-c9-connoropolous.c9.io/
 
-to compile: 
+TO COMPILE & DEPLOY
+delete /public -> /content, /css, /lib, /src, index.html
 cd public/develop
 grunt
+cd ../..
+git add .
+git commit -a -m "new commit"  (write a relevant message into the commit)
+switch to deploy view (the little hot air balloon), click mm-famous, click deploy
+
+navigate to->
+http://mm-famous.herokuapp.com/
+
+END
 
 
+connor's notes to self
+heroku config:add DATABASE_URL=postgres://tuwkjxqeyazkuj:kYd8RwJyOmybL_SGy7cV6Fh8xf@ec2-54-243-194-227.compute-1.amazonaws.com:5432/d1o331hk10a4g1 --app mm-famous
 
 
 == Metamaps
