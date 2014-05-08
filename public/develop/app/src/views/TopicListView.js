@@ -27,7 +27,7 @@ define(function(require, exports, module) {
     this.listSurfaces = [];
 
     this.listScrollview = new Scrollview({
-      speedLimit: 2.5,
+      //speedLimit: 2.5,
       edgeGrip: 0.05
     });
     this.listScrollview.sequenceFrom(this.listSurfaces);

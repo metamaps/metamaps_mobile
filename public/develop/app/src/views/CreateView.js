@@ -180,8 +180,8 @@ define(function(require, exports, module) {
 
         var gridMod = new Modifier({
             size: [width, 360*height/568],
-            origin: [0.5, 0.5],
-            transform: Transform.translate(0, 30, 0)
+            origin: [0, 0],
+            transform: Transform.translate(0, 150, 0)
         });
 
         this._add(gridMod).add(grid);

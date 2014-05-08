@@ -1,15 +1,3 @@
-// goals
-
-/*
-add a back button 
-
-add a topic view
-
-
-
-
-*/
-
 // add functions to string objects to count lines
 String.prototype.lines = function() { return this.split(/\r*\n/); }
 String.prototype.lineCount = function() { return this.lines().length; }
@@ -23,10 +11,12 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform');
     var Surface = require('famous/core/Surface');
     var AppView = require('views/AppView');
+    var LoginView = require('views/LoginView');
 
 	var mainContext = Engine.createContext();
 
 	var appView = new AppView();
+	var loginView = new LoginView();
 
 	var test = navigator.userAgent.toLowerCase();
 	if (test.indexOf("android") > -1) {
@@ -62,5 +52,6 @@ define(function(require, exports, module) {
           }
         });
         mainContext.add(appView);
+        //mainContext.add(loginView);
     }, 1500);
 });

@@ -9,7 +9,7 @@ rails s -b $IP -p $PORT
 navigate to->
 https://metamaps_gen002-c9-connoropolous.c9.io/develop/app/index.html
 
-develop all client files in /public/develop/app/views, when you code these files, just hit refresh at this url to test
+develop all client files in /public/develop/app/src/views, when you code these files, just hit refresh at this url to test
 https://metamaps_gen002-c9-connoropolous.c9.io/develop/app/index.html
 develop server files in /app/controllers, and /app/models, /config/routes.rb
 don't touch anything else.

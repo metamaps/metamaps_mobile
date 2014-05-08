@@ -155,7 +155,11 @@ define(function(require, exports, module) {
         this.createView = new CreateView(this);
         this.createView.on('canCreateTopic', this.menuBarView.enableCreate.bind(this.menuBarView));
         this.createView.on('cantCreateTopic', this.menuBarView.disableCreate.bind(this.menuBarView));
-        this._add(this.createView);
+        this.createMod = new Modifier({
+            opacity: 0,
+            transform: Transform.translate(0, 0, -1)
+        });
+        this._add(this.createMod).add(this.createView);
     }
     
     function _createEdgeSwapperView() {
@@ -194,7 +198,7 @@ define(function(require, exports, module) {
         
         
         this.edgeSwapperMod = new Modifier({
-         transform: Transform.translate(0,44,0)  
+         transform: Transform.translate(0,44,1)  
         });
         
         this._add(this.edgeSwapperMod).add(this.edgeSwapper);
@@ -240,7 +244,9 @@ define(function(require, exports, module) {
         });
 
         this.singleTopicView = new TopicView(this);
-        this.singleTopicMod = new Modifier();
+        this.singleTopicMod = new Modifier({
+            transform: Transform.translate(0,0,1)
+        });
 
         this.singleTopicContainerView.add(this.singleTopicMod).add(this.singleTopicView);
     }
@@ -283,6 +289,7 @@ define(function(require, exports, module) {
     AppView.prototype.showMapList = function() {
         this.edgeSwapper.show(this.mapListContainerView);
         this.plusMod.setOpacity(0);
+        this.plusMod.setTransform(Transform.translate(0,0,-1));
         this.menuBarView.hideBackIcon();
         this.currentPage = 'MapListPage';
         this.menuBarView.titleSurf.setContent('My Maps');
@@ -317,6 +324,7 @@ define(function(require, exports, module) {
         
         this.edgeSwapper.show(this.topicListContainerView);
         this._add(this.plusMod).add(this.plusView);
+        this.plusMod.setTransform(Transform.translate(0,0,2));
         this.plusMod.setOpacity(1, this.options.transition);
         this.menuBarView.showBackIcon();
         this.currentPage = 'TopicListPage';
@@ -333,24 +341,29 @@ define(function(require, exports, module) {
         
         this.edgeSwapper.goForward.call(this);
         this.edgeSwapper.show(this.singleTopicContainerView);
-        this.plusMod.setOpacity(0, this.options.transition);
+        this.plusMod.setOpacity(0);
+        this.plusMod.setTransform(Transform.translate(0,0,-1));
         this.menuBarView.showBackIcon();
         this.currentPage = 'TopicPage';
     }
 
     AppView.prototype.slideCreateUp = function(callback) {
         // show the plus icon again
-        this.plusMod.setOpacity(1, this.options.transition);
+        this.plusMod.setOpacity(1);
+        this.plusMod.setTransform(Transform.translate(0,0,2));
         
         // set the title back to what it was
         this.menuBarView.titleSurf.setContent(this.storeTitle);
         
         this.edgeSwapperMod.setTransform(Transform.translate(0, 44, 0), this.options.transition, callback);
+        this.createMod.setOpacity(0, this.options.transition);
     }
 
     AppView.prototype.slideCreateDown = function() {
+        this.createMod.setOpacity(1);
         this.edgeSwapperMod.setTransform(Transform.translate(0, this.options.height, 0), this.options.transition);
-        this.plusMod.setOpacity(0, this.options.transition);
+        this.plusMod.setOpacity(0);
+        this.plusMod.setTransform(Transform.translate(0,0,-2));
         
         this.menuBarView.showXIcon();
         
