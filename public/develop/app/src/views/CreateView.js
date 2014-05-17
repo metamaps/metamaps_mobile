@@ -157,7 +157,7 @@ define(function(require, exports, module) {
                 surf = new Surface({
                     size: [undefined,undefined],
                     classes: ['filterIcon'],
-                    content: '<img class="filterIconImg" width="' + scaledWidth + '" src="content/images/'+ metacode.get('icon') +'"/>'+
+                    content: '<img class="filterIconImg" width="' + scaledWidth + '" src="content/images'+ metacode.get('icon') +'"/>'+
                                 '<div class="filterIconText available">' + metacode.get('name').toUpperCase() +'</div>',
                 });
                 surf.index = (row * 3) + col;

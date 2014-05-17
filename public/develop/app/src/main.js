@@ -34,9 +34,9 @@ define(function(require, exports, module) {
     var centerSpinModifier = new Modifier({
        origin: [0.5, 0.5],
        transform : function() {
-           var z = Transform.rotateZ(.009 * (Date.now() - initialTime));
-           var y = Transform.rotateY(.009 * (Date.now() - initialTime));
-           var x = Transform.rotateY(.009 * (Date.now() - initialTime));
+           var z = Transform.rotateZ(0.009 * (Date.now() - initialTime));
+           var y = Transform.rotateY(0.009 * (Date.now() - initialTime));
+           var x = Transform.rotateY(0.009 * (Date.now() - initialTime));
            return Transform.multiply(z, y, x);
        }
     });
