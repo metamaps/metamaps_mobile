@@ -13,14 +13,10 @@ define(function(require, exports, module) {
     var AppView = require('views/AppView');
     var LoginView = require('views/LoginView');
     
-    var CreateTwoView = require('views/CreateTwoView');
-
 	var mainContext = Engine.createContext();
 
 	var appView = new AppView();
 	var loginView = new LoginView();
-	
-	var createTwoView = new CreateTwoView();
 
 	var test = navigator.userAgent.toLowerCase();
 	if (test.indexOf("android") > -1) {
@@ -45,9 +41,10 @@ define(function(require, exports, module) {
        }
     });
 
-    mainContext.add(centerSpinModifier).add(logo);
+    //mainContext.add(centerSpinModifier).add(logo);
+    mainContext.add(appView);
     
-    setTimeout(function() {
+    /*setTimeout(function() {
         centerSpinModifier.setTransform(Transform.identity);
         logo.setOptions({
           content: '',
@@ -57,9 +54,6 @@ define(function(require, exports, module) {
         });
         
         mainContext.add(appView);
-        //mainContext.add(loginView);
         
-        //mainContext.add(createTwoView);
-        
-    }, 0);
+    }, 0);*/
 });
