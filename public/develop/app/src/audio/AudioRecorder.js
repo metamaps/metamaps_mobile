@@ -67,7 +67,7 @@ define(function(require, exports, module) {
         inputPoint.connect( analyserNode );
 
         core = new Recorder(inputPoint, {
-            workerPath: "/develop/app/lib/recorder/recorderWorker.js"
+            workerPath: "/lib/recorder/recorderWorker.js"
         });
 
         var zeroGain = audioContext.createGain();

@@ -12,7 +12,8 @@ module.exports = {
         'images/{,*/}*.webp',
         // '{,*/}*.html',
         'styles/fonts/{,*/}*.*',
-        'lib/famous/**/**.css'
+        'lib/famous/**/**.css',
+        'lib/recorder/recorderWorker.js'
       ]
     }]
   }
