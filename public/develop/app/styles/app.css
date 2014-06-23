@@ -28,6 +28,10 @@ html {
     opacity: 1;
 }
 
+.addText {
+    color: #7A7A7A;
+}
+
 .unavailable {
     opacity: 0.1;
 }

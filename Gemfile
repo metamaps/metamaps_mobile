@@ -7,7 +7,7 @@ gem 'rails', '3.2.17'
 
 gem 'devise'
 gem 'redis'
-gem 'mysql2'
+#gem 'mysql2'
 gem 'pg'
 gem 'cancan'
 gem 'formula'

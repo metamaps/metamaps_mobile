@@ -11,7 +11,7 @@ define(function(require, exports, module) {
     var CreateView      = require('views/CreateView');
     var MapListView     = require('views/MapListView');
     var TopicListView   = require('views/TopicListView');
-    var TopicView   = require('views/TopicView');
+    var TopicView       = require('views/TopicView');
     var PlusView        = require('views/PlusView');
 
     function AppView() {

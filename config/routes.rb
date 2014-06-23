@@ -7,6 +7,8 @@ ISSAD::Application.routes.draw do
     get "sign_out", :to => "devise/sessions#destroy"
   end
   
+  match 'upload', to: 'upload#fileupload', via: :post, as: :fileupload
+  
   resources :maps, :constraints => {:format => /(json)/}
   resources :topics, :constraints => {:format => /(json)/}
   resources :synapses, :constraints => {:format => /(json)/}

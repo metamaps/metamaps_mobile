@@ -12,11 +12,15 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface');
     var AppView = require('views/AppView');
     var LoginView = require('views/LoginView');
+    
+    var CreateTwoView = require('views/CreateTwoView');
 
 	var mainContext = Engine.createContext();
 
 	var appView = new AppView();
 	var loginView = new LoginView();
+	
+	var createTwoView = new CreateTwoView();
 
 	var test = navigator.userAgent.toLowerCase();
 	if (test.indexOf("android") > -1) {
@@ -51,7 +55,11 @@ define(function(require, exports, module) {
             display: 'none'   
           }
         });
+        
         mainContext.add(appView);
         //mainContext.add(loginView);
-    }, 1500);
+        
+        //mainContext.add(createTwoView);
+        
+    }, 0);
 });
