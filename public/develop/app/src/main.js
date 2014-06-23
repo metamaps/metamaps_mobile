@@ -2,6 +2,16 @@
 String.prototype.lines = function() { return this.split(/\r*\n/); }
 String.prototype.lineCount = function() { return this.lines().length; }
 
+window.onload = function() {
+
+    // Normalize the various vendor prefixed versions of getUserMedia.
+    navigator.getUserMedia = (navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia || 
+    navigator.msGetUserMedia);
+
+}
+
 /* globals define */
 define(function(require, exports, module) {
     'use strict';

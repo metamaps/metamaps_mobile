@@ -1,4 +1,5 @@
 define(function(require, exports, module) {
+
     var Surface    = require('famous/core/Surface');
     var Modifier   = require('famous/core/Modifier');
     var Transform  = require('famous/core/Transform');
@@ -274,6 +275,7 @@ define(function(require, exports, module) {
                 initialXpos = e.targetTouches[0].clientX;
                 lastXpos = e.targetTouches[0].clientX;
                 originalMetacodeIndex = this.selectedMetacodeIndex;
+                indexOfMetacodeToChange = undefined;
                 
             }.bind(this));
             
@@ -284,16 +286,23 @@ define(function(require, exports, module) {
                 difference = e.targetTouches[0].clientX - lastXpos;
                 this.xAxis += difference;
                 this.metacodesMod.setTransform(Transform.translate(this.xAxis, 164, 0));
-                //self.selectMetacode(this.index, this.typeText, this.suggestText);
-                
+
                 diffFromInitial = Math.abs(e.targetTouches[0].clientX - initialXpos) % scaledWidth;
-                
-                diffFromInitial = e.targetTouches[0].clientX !== initialXpos && diffFromInitial == 0 ? 136 : diffFromInitial;
-                
-                scaledWidthMinusDiff = scaledWidth - diffFromInitial;
-                
                 // if moving to the right, start selecting the one 'behind' it to the left, and converse
                 indexOfMetacodeToChange = e.targetTouches[0].clientX - initialXpos > 0 ? this.selectedMetacodeIndex - 1 : this.selectedMetacodeIndex + 1;
+                
+                // account for the case where you're switching to a new metacode
+                diffFromInitial = Math.abs(e.targetTouches[0].clientX - initialXpos) >= scaledWidth ? scaledWidth : diffFromInitial;
+                indexOfMetacodeToChange = e.targetTouches[0].clientX === initialXpos ? undefined : indexOfMetacodeToChange;
+                
+                //set indexOfMetacodeToChange to undefined if there is no 'next metacode'
+                indexOfMetacodeToChange = metacodes[indexOfMetacodeToChange] ? indexOfMetacodeToChange : undefined;
+                
+                console.log(this.selectedMetacodeIndex);
+                console.log(indexOfMetacodeToChange);
+                
+                
+                scaledWidthMinusDiff = scaledWidth - diffFromInitial;
                 
                 var sizeIncreaseScale = scaledWidthMinusDiff / scaledWidth * 0.2 + 0.4;
                 var iconOpacityIncreaseScale = scaledWidthMinusDiff / scaledWidth * 0.5 + 0.5;
@@ -303,27 +312,45 @@ define(function(require, exports, module) {
                 var iconOpacityDecreaseScale = diffFromInitial / scaledWidth * 0.5 + 0.5;
                 var textOpacityDecreaseScale = diffFromInitial / scaledWidth;
                 
+                var remainder, size, adjust;
+                
                 this.rowIconModifiers[this.selectedMetacodeIndex].setSize([Math.round(scaledWidth * sizeIncreaseScale), Math.round(scaledWidth * sizeIncreaseScale)]);
                 this.rowIconModifiers[this.selectedMetacodeIndex].setOpacity(iconOpacityIncreaseScale);
                 this.rowTextModifiers[this.selectedMetacodeIndex].setOpacity(textOpacityIncreaseScale);
                 
-                if (metacodes[indexOfMetacodeToChange] !== undefined) {
+                if (indexOfMetacodeToChange !== undefined) {
                     this.rowIconModifiers[indexOfMetacodeToChange].setSize([Math.round(scaledWidth * sizeDecreaseScale), Math.round(scaledWidth * sizeDecreaseScale)]);
                     this.rowIconModifiers[indexOfMetacodeToChange].setOpacity(iconOpacityDecreaseScale);
                     this.rowTextModifiers[indexOfMetacodeToChange].setOpacity(textOpacityDecreaseScale);
                 }
                 
-                if (e.targetTouches[0].clientX == initialXpos) {
+                if (lastXpos >= initialXpos && e.targetTouches[0].clientX <= initialXpos) {
                     this.selectedMetacodeIndex = originalMetacodeIndex;
                     this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
-                    console.log(this.selectedMetacode);
-                } else if (diffFromInitial == scaledWidth && metacodes[indexOfMetacodeToChange] !== undefined) {
+                    console.log('switched back to original');
+                    
+                } else if (lastXpos <= initialXpos && e.targetTouches[0].clientX >= initialXpos) {
+                    this.selectedMetacodeIndex = originalMetacodeIndex;
+                    this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
+                    console.log('switched back to original');
+                    
+                } else if (diffFromInitial === scaledWidth && indexOfMetacodeToChange !== undefined) {
                     originalMetacodeIndex = indexOfMetacodeToChange;
                     this.selectedMetacodeIndex = indexOfMetacodeToChange;
                     this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
-                    console.log(this.selectedMetacode);
-                    initialXaxis = this.xAxis;
                     initialXpos = e.targetTouches[0].clientX;
+                    
+                    remainder = Math.abs(this.xAxis) % scaledWidth;
+                    sign = remainder >= scaledWidth / 2 ? -1 : 1;
+                    adjust = remainder >= scaledWidth / 2 ? -1 * remainder + scaledWidth : -1 * remainder;
+                    if (this.xAxis < 0) {
+                        initialXaxis = this.xAxis - adjust - sign * extraDiff;
+                    }
+                    else if (this.xAxis >= 0) {
+                        initialXaxis = this.xAxis + adjust + sign * extraDiff;
+                    }
+                    
+                    console.log('switched to ' + metacodes[this.selectedMetacodeIndex].get('name'));
                 }
                 
                 lastXpos = e.targetTouches[0].clientX;
@@ -361,10 +388,10 @@ define(function(require, exports, module) {
                     {duration: 300, curve: 'easeInOut'});
                     
                 
+                console.log(this.xAxis);
+                console.log(initialXaxis);
+                
                 if (this.xAxis === initialXaxis ) {
-                    this.selectedMetacodeIndex = originalMetacodeIndex;
-                    this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
-                    console.log(this.selectedMetacode);
                     
                     this.rowIconModifiers[this.selectedMetacodeIndex].setSize([Math.round(scaledWidth*0.6), Math.round(scaledWidth*0.6)],
                         {duration: 300, curve: 'linear'});
@@ -373,7 +400,7 @@ define(function(require, exports, module) {
                     this.rowTextModifiers[this.selectedMetacodeIndex].setOpacity(1,
                         {duration: 300, curve: 'linear'});
                     
-                    if (metacodes[indexOfMetacodeToChange] !== undefined) {
+                    if (indexOfMetacodeToChange !== undefined) {
                         this.rowIconModifiers[indexOfMetacodeToChange].setSize([Math.round(scaledWidth * 0.4), Math.round(scaledWidth * 0.4)],
                         {duration: 300, curve: 'linear'});
                         this.rowIconModifiers[indexOfMetacodeToChange].setOpacity(0.5,
@@ -382,7 +409,9 @@ define(function(require, exports, module) {
                             {duration: 300, curve: 'linear'});
                     }
                     
-                } else if (this.xAxis !== initialXaxis && metacodes[indexOfMetacodeToChange] !== undefined) {
+                    console.log(this.selectedMetacode);
+                    
+                } else if (this.xAxis !== initialXaxis && indexOfMetacodeToChange !== undefined) {
                    
                     this.rowIconModifiers[this.selectedMetacodeIndex].setSize([Math.round(scaledWidth * 0.4), Math.round(scaledWidth * 0.4)],
                         {duration: 300, curve: 'linear'});
@@ -400,6 +429,7 @@ define(function(require, exports, module) {
                     
                     this.selectedMetacodeIndex = indexOfMetacodeToChange;
                     this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
+                    
                     console.log(this.selectedMetacode);
                 }
                 

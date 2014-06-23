@@ -1,14 +1,27 @@
 define(function(require, exports, module) {
     require("recorder/Recorder");
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-
-    var audioContext    = new AudioContext(),
-        audioInput      = null,
-        realAudioInput  = null,
-        inputPoint      = null,
-        core            = Recorder,
-        rafID           = null;
-
+    
+    var audioContext        = null,
+            audioInput      = null,
+            realAudioInput  = null,
+            inputPoint      = null,
+            core            = Recorder,
+            rafID           = null;
+            
+    var initAudio = function() {
+        
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({audio:true}, gotStream, function(e) {
+                alert('Error getting audio');
+                console.log(e);
+            });
+        }
+        
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        
+        audioContext = new AudioContext();
+    };
+    
     var saveAudio = function(buffers, done) {
         // the ONLY time gotBuffers is called is right after a new recording is completed - 
         // so here's where we should set up the download.
@@ -16,8 +29,9 @@ define(function(require, exports, module) {
     };
 
     var start = function() {
-        if (!core) return;
-        console.log(core);
+        
+        if (audioContext === null) initAudio();
+        
         core.clear();
         core.record();
     };
@@ -75,23 +89,7 @@ define(function(require, exports, module) {
         inputPoint.connect( zeroGain );
         zeroGain.connect( audioContext.destination );
     };
-
-    var initAudio = function() {
-            if (!navigator.getUserMedia)
-                navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            if (!navigator.cancelAnimationFrame)
-                navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
-            if (!navigator.requestAnimationFrame)
-                navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
-
-        navigator.getUserMedia({audio:true}, gotStream, function(e) {
-                alert('Error getting audio');
-                console.log(e);
-            });
-    };
-
-    initAudio();
-
+    
     module.exports = {
         start: start,
         stop: stop

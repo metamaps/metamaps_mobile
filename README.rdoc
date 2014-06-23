@@ -14,6 +14,15 @@ https://metamaps_gen002-c9-connoropolous.c9.io/develop/app/index.html
 develop server files in /app/controllers, and /app/models, /config/routes.rb
 don't touch anything else.
 
+if the server starts 'hanging', not responding, just close the terminal where the server is running, kill the process, 
+and then restart the server
+look in the /tmp/pids/server.pids and copy the number from that file
+run 'kill -9 WHATEVERTHEPIDWAS'
+rails s -b $IP -p $PORT
+
+to avoid this, while doing development, just open up this tab, which will auto refresh and keep the server active
+http://www.refreshthis.com/refreshthis.php?url=https%3A%2F%2Fmetamaps_gen002-c9-connoropolous.c9.io%2F&min=0&sec=30
+
 
 TO VIEW & TEST PRODUCTION VERSION
 run in a terminal ->
