@@ -1,5 +1,4 @@
 define(function(require, exports, module) {
-
     var Surface    = require('famous/core/Surface');
     var Modifier   = require('famous/core/Modifier');
     var Transform  = require('famous/core/Transform');
@@ -114,11 +113,13 @@ define(function(require, exports, module) {
             origin: [0.5, 0]
         });
         
-        this.emptyImageText = '<img class="addIcon" src="content/images/photo.png" width="40" height= "40" /><br><span class="addText">Tap to add photo...</span>';
+        this.emptyImageText = '<img class="addIcon" src="content/images/photo.png" width="35" height= "35" /><br><span class="addText">Tap to add photo...</span>';
         this.emptyImageProperties = {
-            border: '1px solid #7A7A7A',
+            border: '1px solid #B8B8B8',
+            borderRadius: '3px',
+            color: '#B8B8B8',
             textAlign: 'center',
-            paddingTop: '40px',
+            paddingTop: '45px',
             overflow: 'hidden'
         };
         
@@ -152,16 +153,18 @@ define(function(require, exports, module) {
             origin: [0.5, 0]
         });
         
-        this.emptyRecorderText = '<img class="addIcon" src="content/images/audio.png" width="40" height= "40" /><br><span class="addText">Hold to record...</span>';
-        this.recordingText = '<img class="addIcon" src="content/images/audio.png" width="40" height= "40" /><br><span class="addText">Recording...</span>';
-        this.doneRecordingText = '<img class="addIcon" src="content/images/audio.png" width="40" height= "40" /><br><span class="addText">You captured a recording!</span>';
+        this.emptyRecorderText = '<img class="addIcon" src="content/images/audio.png" width="35" height="35" /><br><span class="addText">Hold to record...</span>';
+        this.recordingText = '<img class="addIcon" src="content/images/audio.png" width="35" height="35" /><br><span class="addText">Recording...</span>';
+        this.doneRecordingText = '<img class="addIcon" src="content/images/audio.png" width="35" height= "35" /><br><span class="addText">You captured a recording!</span>';
         
         this.recordSurface = new Surface({
-            size: [window.innerWidth - 20, 100], //window.innerWidth, window.innerHeight / 5],
+            size: [window.innerWidth - 20, 80], //window.innerWidth, window.innerHeight / 5],
             properties: {
-                border: '1px solid #7A7A7A',
+                border: '1px solid #B8B8B8',
+                borderRadius: '3px',
                 textAlign: 'center',
-                paddingTop: '18px'
+                paddingTop: '10px',
+                color: '#B8B8B8'
             },
             content: this.emptyRecorderText
         });
@@ -193,7 +196,6 @@ define(function(require, exports, module) {
             clearInterval(this.recordingMessage);
             
             AudioRecorder.stop(function(blob) {
-                console.log(blob);
                 this.audioFile = blob;
                 this.audioFile.name = Date.now() + ".wav";
                 
@@ -256,7 +258,7 @@ define(function(require, exports, module) {
                 size: [true, 30],
                 opacity: 0,
                 origin: [0, 0],
-                transform: Transform.translate(0,0,-1)
+                transform: Transform.translate(0,10,-1)
             });
             
             metacode = metacodes[col];
@@ -298,10 +300,6 @@ define(function(require, exports, module) {
                 //set indexOfMetacodeToChange to undefined if there is no 'next metacode'
                 indexOfMetacodeToChange = metacodes[indexOfMetacodeToChange] ? indexOfMetacodeToChange : undefined;
                 
-                console.log(this.selectedMetacodeIndex);
-                console.log(indexOfMetacodeToChange);
-                
-                
                 scaledWidthMinusDiff = scaledWidth - diffFromInitial;
                 
                 var sizeIncreaseScale = scaledWidthMinusDiff / scaledWidth * 0.2 + 0.4;
@@ -311,8 +309,6 @@ define(function(require, exports, module) {
                 var sizeDecreaseScale = diffFromInitial / scaledWidth * 0.2 + 0.4;
                 var iconOpacityDecreaseScale = diffFromInitial / scaledWidth * 0.5 + 0.5;
                 var textOpacityDecreaseScale = diffFromInitial / scaledWidth;
-                
-                var remainder, size, adjust;
                 
                 this.rowIconModifiers[this.selectedMetacodeIndex].setSize([Math.round(scaledWidth * sizeIncreaseScale), Math.round(scaledWidth * sizeIncreaseScale)]);
                 this.rowIconModifiers[this.selectedMetacodeIndex].setOpacity(iconOpacityIncreaseScale);
@@ -327,30 +323,18 @@ define(function(require, exports, module) {
                 if (lastXpos >= initialXpos && e.targetTouches[0].clientX <= initialXpos) {
                     this.selectedMetacodeIndex = originalMetacodeIndex;
                     this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
-                    console.log('switched back to original');
-                    
+
                 } else if (lastXpos <= initialXpos && e.targetTouches[0].clientX >= initialXpos) {
                     this.selectedMetacodeIndex = originalMetacodeIndex;
                     this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
-                    console.log('switched back to original');
-                    
+
                 } else if (diffFromInitial === scaledWidth && indexOfMetacodeToChange !== undefined) {
                     originalMetacodeIndex = indexOfMetacodeToChange;
                     this.selectedMetacodeIndex = indexOfMetacodeToChange;
                     this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
+                    initialXaxis = this.xAxis;
                     initialXpos = e.targetTouches[0].clientX;
                     
-                    remainder = Math.abs(this.xAxis) % scaledWidth;
-                    sign = remainder >= scaledWidth / 2 ? -1 : 1;
-                    adjust = remainder >= scaledWidth / 2 ? -1 * remainder + scaledWidth : -1 * remainder;
-                    if (this.xAxis < 0) {
-                        initialXaxis = this.xAxis - adjust - sign * extraDiff;
-                    }
-                    else if (this.xAxis >= 0) {
-                        initialXaxis = this.xAxis + adjust + sign * extraDiff;
-                    }
-                    
-                    console.log('switched to ' + metacodes[this.selectedMetacodeIndex].get('name'));
                 }
                 
                 lastXpos = e.targetTouches[0].clientX;
@@ -388,11 +372,10 @@ define(function(require, exports, module) {
                     {duration: 300, curve: 'easeInOut'});
                     
                 
-                console.log(this.xAxis);
-                console.log(initialXaxis);
-                
                 if (this.xAxis === initialXaxis ) {
-                    
+                    this.selectedMetacodeIndex = originalMetacodeIndex;
+                    this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
+
                     this.rowIconModifiers[this.selectedMetacodeIndex].setSize([Math.round(scaledWidth*0.6), Math.round(scaledWidth*0.6)],
                         {duration: 300, curve: 'linear'});
                     this.rowIconModifiers[this.selectedMetacodeIndex].setOpacity(1,
@@ -400,7 +383,7 @@ define(function(require, exports, module) {
                     this.rowTextModifiers[this.selectedMetacodeIndex].setOpacity(1,
                         {duration: 300, curve: 'linear'});
                     
-                    if (indexOfMetacodeToChange !== undefined) {
+                    if (metacodes[indexOfMetacodeToChange] !== undefined) {
                         this.rowIconModifiers[indexOfMetacodeToChange].setSize([Math.round(scaledWidth * 0.4), Math.round(scaledWidth * 0.4)],
                         {duration: 300, curve: 'linear'});
                         this.rowIconModifiers[indexOfMetacodeToChange].setOpacity(0.5,
@@ -409,9 +392,7 @@ define(function(require, exports, module) {
                             {duration: 300, curve: 'linear'});
                     }
                     
-                    console.log(this.selectedMetacode);
-                    
-                } else if (this.xAxis !== initialXaxis && indexOfMetacodeToChange !== undefined) {
+                } else if (this.xAxis !== initialXaxis && metacodes[indexOfMetacodeToChange] !== undefined) {
                    
                     this.rowIconModifiers[this.selectedMetacodeIndex].setSize([Math.round(scaledWidth * 0.4), Math.round(scaledWidth * 0.4)],
                         {duration: 300, curve: 'linear'});
@@ -429,8 +410,6 @@ define(function(require, exports, module) {
                     
                     this.selectedMetacodeIndex = indexOfMetacodeToChange;
                     this.selectedMetacode = metacodes[this.selectedMetacodeIndex].get('name');
-                    
-                    console.log(this.selectedMetacode);
                 }
                 
             }.bind(this));
@@ -447,8 +426,10 @@ define(function(require, exports, module) {
                 properties: {
                     color: '#7A7A7A',
                     textAlign: 'center',
-                    fontSize: '18px',
-                    fontWeight: 'bold'
+                    fontSize: '25px',
+                    fontWeight: 'bold',
+                    fontStyle: 'italic',
+                    whiteSpace: 'nowrap'
                 }   
             });
 

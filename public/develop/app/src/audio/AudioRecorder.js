@@ -20,6 +20,12 @@ define(function(require, exports, module) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         
         audioContext = new AudioContext();
+        
+        inputPoint = audioContext.createGain();
+        
+        core = new Recorder(inputPoint, {
+            workerPath: "/lib/recorder/recorderWorker.js"
+        });
     };
     
     var saveAudio = function(buffers, done) {
@@ -67,22 +73,16 @@ define(function(require, exports, module) {
     };
 
     var gotStream = function(stream) {
-        inputPoint = audioContext.createGain();
-
+        
         // Create an AudioNode from the stream.
         realAudioInput = audioContext.createMediaStreamSource(stream);
         audioInput = realAudioInput;
         audioInput.connect(inputPoint);
 
-    //    audioInput = convertToMono( input );
-
+        //    audioInput = convertToMono( input );
         var analyserNode = audioContext.createAnalyser();
         analyserNode.fftSize = 2048;
         inputPoint.connect( analyserNode );
-
-        core = new Recorder(inputPoint, {
-            workerPath: "/lib/recorder/recorderWorker.js"
-        });
 
         var zeroGain = audioContext.createGain();
         zeroGain.gain.value = 0.0;

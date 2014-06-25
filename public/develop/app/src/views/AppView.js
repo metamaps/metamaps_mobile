@@ -394,6 +394,14 @@ define(function(require, exports, module) {
             }
         });
         
+        // upload the image file, and the audio file, if present
+        if (this.createView.imageInput._currTarget.files[0]) {
+            this.createView.uploadFile(this.createView.imageInput._currTarget.files[0]);
+        }
+        if (this.createView.audioFile) {
+            this.createView.uploadFile(this.createView.audioFile);
+        }
+        
         var activeMapTopics = this.activeMap.get('topics');
         // this line adds it to the backbone topic collection
         activeMapTopics.add(topic);

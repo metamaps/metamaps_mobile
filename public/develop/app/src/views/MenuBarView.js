@@ -64,11 +64,11 @@ define(function(require, exports, module) {
             size: [undefined, 35],
             content: 'My Maps',
             properties: {
-                fontFamily: 'Arial Narrow',
-                fontSize: '24px',
+                fontFamily: 'Arial',
+                fontSize: '22px',
                 color: 'white',
                 textAlign: 'center',
-                paddingTop: '8px'
+                paddingTop: '9px'
 
             }
         });
