@@ -53,8 +53,7 @@ define(function(require, exports, module) {
     function _createBackbone() {
         var self = this;
         
-        this.Metacode = Backbone.Model.extend({
-        });
+        this.Metacode = Backbone.Model.extend({});
         var MetacodeCollection = Backbone.Collection.extend({
           model: this.Metacode,
           url: '/metacodes'
@@ -386,21 +385,23 @@ define(function(require, exports, module) {
         
         topic.save(null, {
             success: function(model){  
+                
                 var mapping = new self.Mapping({
                     map_id: self.activeMap.id,
                     topic_id: model.id
                 });
                 mapping.save();
+                
+                // upload the image file, and the audio file, if present
+                if (self.createView.imageInput._currTarget.files[0]) {
+                    self.createView.uploadFile(self.createView.imageInput._currTarget.files[0], model.id, 'image');
+                }
+                if (self.createView.audioFile) {
+                    self.createView.uploadFile(self.createView.audioFile, model.id, 'audio');
+                }
+                self.createView.reset();
             }
         });
-        
-        // upload the image file, and the audio file, if present
-        if (this.createView.imageInput._currTarget.files[0]) {
-            this.createView.uploadFile(this.createView.imageInput._currTarget.files[0]);
-        }
-        if (this.createView.audioFile) {
-            this.createView.uploadFile(this.createView.audioFile);
-        }
         
         var activeMapTopics = this.activeMap.get('topics');
         // this line adds it to the backbone topic collection
@@ -408,7 +409,6 @@ define(function(require, exports, module) {
         this.topicListView.addTopic(topic);
         
         this.slideCreateUp.call(this, function() {
-            this.createView.reset();
             this.showSingleTopic(topic);
         }.bind(this));
     }

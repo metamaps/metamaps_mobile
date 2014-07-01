@@ -1,4 +1,7 @@
 class TopicsController < ApplicationController
+  
+  skip_before_filter  :verify_authenticity_token, :only => [:create]
+  
   # GET /topics
   # GET /topics.json
   def index
@@ -41,7 +44,7 @@ class TopicsController < ApplicationController
 
     respond_to do |format|
       if @topic.save
-        format.json { render json: @topic, status: :created, location: @topic }
+        format.json { render json: @topic, status: :created }
       else
         format.json { render json: @topic.errors, status: :unprocessable_entity }
       end

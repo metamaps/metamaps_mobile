@@ -2,17 +2,22 @@ class UploadController < ApplicationController
   
   skip_before_filter  :verify_authenticity_token
   
-  respond_to :html, :js, :json
+  respond_to :js, :json
   
   def fileupload
-    raw = request.env["rack.input"].read
-    File.open("#{Rails.root}/public/uploads/"+request.env["HTTP_X_FILE_NAME"], "wb") do |f| 
-      f.puts raw;    
-    end
     
+    @topic = Topic.find(request.env["HTTP_TOPIC_ID"])
+    
+    if request.env["HTTP_IMAGE_OR_AUDIO"] == "audio"
+      @topic.audio = request.env["rack.input"]
+      @topic.save
+    elsif request.env["HTTP_IMAGE_OR_AUDIO"] == "image"
+      @topic.image = request.env["rack.input"]
+      @topic.save
+    end
+
     respond_to do |format|
       format.js { render json: "Successful upload" }
-      format.html # index.html.erb
       format.json { render json: "Successful upload" }
     end
   end

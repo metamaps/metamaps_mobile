@@ -185,8 +185,7 @@ define(function(require, exports, module) {
     }
     
     MenuBarView.prototype.addTopic = function() {
-        if (this.canCreate) {    
-            console.log('creating a new topic');
+        if (this.canCreate) {
             this.hideXIcon();
             this.hideCheckIcon();
             this.showBackIcon();

@@ -1,4 +1,7 @@
 class MappingsController < ApplicationController
+  
+  skip_before_filter  :verify_authenticity_token, :only => [:create]
+  
   # GET /mappings
   # GET /mappings.json
   def index
@@ -41,7 +44,7 @@ class MappingsController < ApplicationController
 
     respond_to do |format|
       if @mapping.save
-        format.json { render json: @mapping, status: :created, location: @mapping }
+        format.json { render json: @mapping, status: :created }
       else
         format.json { render json: @mapping.errors, status: :unprocessable_entity }
       end
