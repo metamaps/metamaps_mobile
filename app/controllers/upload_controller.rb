@@ -9,10 +9,10 @@ class UploadController < ApplicationController
     @topic = Topic.find(request.env["HTTP_TOPIC_ID"])
     
     if request.env["HTTP_IMAGE_OR_AUDIO"] == "audio"
-      @topic.audio = request.env["rack.input"]
+      @topic.audio = request.env["rack.input"].encode("UTF-8", :invalid => :replace, :undef => :replace, :replace => "?")
       @topic.save
     elsif request.env["HTTP_IMAGE_OR_AUDIO"] == "image"
-      @topic.image = request.env["rack.input"]
+      @topic.image = request.env["rack.input"].encode("UTF-8", :invalid => :replace, :undef => :replace, :replace => "?")
       @topic.save
     end
 
