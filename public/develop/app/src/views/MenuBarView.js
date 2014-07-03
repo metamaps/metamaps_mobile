@@ -24,78 +24,69 @@ define(function(require, exports, module) {
         this.canCreate = false;
         
         this.menuSurf = new Surface({
-            size: [undefined, 44],
+            size: [undefined, 56],
             properties: {
-                backgroundColor: '#292929'
+                backgroundColor: '#FAFAFA',
+                boxShadow: 'rgba(0, 0, 0, 0.3) 0px 1px 5px'
             }
         });
         this.menuMod = new Modifier({});
 
         //x-icon
         this.xIconSurf = new Surface({
-            size: [40,40],
-            content: '<img width="40" src="content/images/x-icon.png"/>',
-            properties: {
-                paddingTop: '0.4px',
-                paddingLeft: '2.6px'
-            },
+            size: [25,25],
+            content: '<img width="25" src="content/images/50_x_button.png"/>',
         });
         this.xIconMod = new Modifier({
+            origin: [0, 0.5],
             opacity: 0
         });
         
         
         //back-icon
         this.backIconSurf = new Surface({
-            size: [40,40],
-            content: '<img width="40" src="content/images/arrow-icon-back.png"/>',
-            properties: {
-                paddingTop: '0.4px',
-                paddingLeft: '2.6px'
-            },
+            size: [25,25],
+            content: '<img width="25" src="content/images/50_back_button.png"/>'
         });
         this.backIconMod = new Modifier({
+            origin: [0, 0.5],
             opacity: 0
         });
 
 
         //title
         this.titleSurf = new Surface({
-            size: [undefined, 35],
+            size: [undefined, 28],
             content: 'My Maps',
             properties: {
-                fontFamily: 'Arial',
-                fontSize: '22px',
-                color: 'white',
-                textAlign: 'center',
-                paddingTop: '9px'
-
+                fontFamily: 'robotomedium',
+                fontSize: '20px',
+                color: '#4D4D4D',
+                textAlign: 'left'
             }
         });
         var titleMod = new Modifier({
-            origin: [0.5, 0]
+            size: [undefined, 28],
+            origin: [0, 0.5],
+            transform: Transform.translate(72, 0, 0)
         });
 
         //question icon
         this.checkmarkIconSurf = new Surface({
-            size: [40,40],
-            content: '<img width="34" src="content/images/checkmark.png"/>',
-            properties: {
-                paddingTop: '5px',
-                paddingRight: '30px'
-            }
+            size: [25,25],
+            content: '<img width="25" src="content/images/checkmark.png"/>'
         });
         this.checkmarkIconMod = new Modifier({
-            origin: [.99, 0],
+            origin: [1, 0.5],
             opacity: 0
         });
 
 
         this._add(this.menuMod).add(this.menuSurf);
-        this._add(this.xIconMod).add(this.xIconSurf);
-        this._add(this.backIconMod).add(this.backIconSurf);
+        this._add(this.xIconMod).add(new Modifier({ transform: Transform.translate(16,0,0) })).add(this.xIconSurf);
+        this._add(this.backIconMod).add(new Modifier({ transform: Transform.translate(16,0,0) })).add(this.backIconSurf);
         this._add(titleMod).add(this.titleSurf);
-        this._add(this.checkmarkIconMod).add(this.checkmarkIconSurf);
+        this._add(this.checkmarkIconMod).add(new Modifier({ transform: Transform.translate(-16,0,0) })).add(this.checkmarkIconSurf);
     }
 
     function _setListeners() {

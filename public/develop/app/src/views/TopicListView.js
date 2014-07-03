@@ -33,7 +33,7 @@ define(function(require, exports, module) {
     this.listScrollview.sequenceFrom(this.listSurfaces);
 
     var listScrollMod = new Modifier({
-      size: [window.innerWidth, window.innerHeight - 44]
+      size: [window.innerWidth, window.innerHeight - 56]
     });
     this._add(listScrollMod).add(this.listScrollview);
   }

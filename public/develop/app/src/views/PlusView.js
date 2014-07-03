@@ -21,8 +21,12 @@ define(function(require, exports, module) {
 
 	function _createPlus(){
 	  this.plusSurf = new Surface({
-	    size: [window.innerHeight / 8, window.innerHeight / 8],
-	    content: '<img height='+window.innerHeight / 8+' width'+window.innerHeight / 8+' src="content/images/addtopic.png"/>'
+	    size: [56, 56],
+	    content: '<img height="56" width="56" src="content/images/add_topic.png"/>',
+	    properties: {
+	    	boxShadow: 'rgba(0, 0, 0, 0.75) 1px 1px 5px',
+	    	borderRadius: '28px'
+	    }
 	  });
 
       var draggable = new Draggable();
@@ -37,4 +41,5 @@ define(function(require, exports, module) {
     }
 
 	module.exports = PlusView;
+	
 });

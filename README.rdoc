@@ -4,6 +4,7 @@ While in cloud9
 
 TO VIEW TEST VERSION, AND DO DEVELOPMENT
 run in a terminal (open one with alt+t)->
+rvm use 1.9.3
 rails s -b $IP -p $PORT
 
 navigate to->

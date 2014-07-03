@@ -145,7 +145,8 @@ define(function(require, exports, module) {
         this.storeTitle = '';
 
         this.menuMod = new Modifier({
-            transform: Transform.translate(0, 0, 1)
+            size: [undefined, 56],
+            transform: Transform.translate(0, 0, 2)
         });
         this._add(this.menuMod).add(this.menuBarView);
     }
@@ -197,7 +198,7 @@ define(function(require, exports, module) {
         
         
         this.edgeSwapperMod = new Modifier({
-         transform: Transform.translate(0,44,1)  
+         transform: Transform.translate(0,56,1)  
         });
         
         this._add(this.edgeSwapperMod).add(this.edgeSwapper);
@@ -354,7 +355,7 @@ define(function(require, exports, module) {
         // set the title back to what it was
         this.menuBarView.titleSurf.setContent(this.storeTitle);
         
-        this.edgeSwapperMod.setTransform(Transform.translate(0, 44, 0), this.options.transition, callback);
+        this.edgeSwapperMod.setTransform(Transform.translate(0, 56, 0), this.options.transition, callback);
         this.createMod.setOpacity(0, this.options.transition);
     }
 

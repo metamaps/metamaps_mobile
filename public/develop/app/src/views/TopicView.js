@@ -39,7 +39,7 @@ define(function(require, exports, module) {
   function _createBackground() {
     
     var background = new Surface({
-      size: [window.innerWidth, window.innerHeight - 44],
+      size: [window.innerWidth, window.innerHeight - 56],
       properties: {
         backgroundColor: 'white'   
       }
@@ -58,7 +58,7 @@ define(function(require, exports, module) {
     this.listScrollview.sequenceFrom(this.topicSurfaces);
 
     var listScrollMod = new Modifier({
-      size: [window.innerWidth, window.innerHeight - 44]
+      size: [window.innerWidth, window.innerHeight - 56]
     });
     this._add(listScrollMod).add(this.listScrollview);
   }
@@ -101,7 +101,8 @@ define(function(require, exports, module) {
           lineHeight: '22px',
           resize: 'none',
           textAlign: 'center',
-          fontFamily: 'Georgia'
+          fontFamily: 'robotoregular',
+          color: '#4D4D4D'
         }
     });
       
@@ -132,8 +133,7 @@ define(function(require, exports, module) {
         content: '',
         properties: {
           borderTop: '1px solid #BBB',
-          borderBottom: '1px solid #BBB',
-          color: 'black'
+          borderBottom: '1px solid #BBB'
         }
     });
     
@@ -154,7 +154,8 @@ define(function(require, exports, module) {
           outline: '0',
           fontSize: '15px',
           resize: 'none',
-          fontFamily: 'Georgia'
+          fontFamily: 'robotoregular',
+          color: '#4D4D4D'
         }
     });
     
