@@ -13,8 +13,8 @@ define(function(require, exports, module) {
     this.app = app;
     
     _createStateTracking.call(this);
-    _createBackground.call(this);
     _createList.call(this);
+    _createBackground.call(this);
     _createMetacode.call(this);
     _createTitle.call(this);
     _createMetadata.call(this);
@@ -35,32 +35,44 @@ define(function(require, exports, module) {
     
       
   }
-  
-  function _createBackground() {
-    
-    var background = new Surface({
-      size: [window.innerWidth, window.innerHeight - 56],
-      properties: {
-        backgroundColor: 'white'   
-      }
-    });
-    this._add(background);
-  }
     
   function _createList() {
     
     this.topicSurfaces = [];
 
     this.listScrollview = new Scrollview({
-      speedLimit: 2.5,
+      //speedLimit: 2.5,
       edgeGrip: 0.05
     });
     this.listScrollview.sequenceFrom(this.topicSurfaces);
 
     var listScrollMod = new Modifier({
-      size: [window.innerWidth, window.innerHeight - 56]
+      transform: Transform.translate(0,0,1)
     });
+    listScrollMod.sizeFrom(function(){
+      return [window.innerWidth, window.innerHeight - 56];
+    });
+    
     this._add(listScrollMod).add(this.listScrollview);
+  }
+  
+  function _createBackground() {
+    
+    var mod = new Modifier({
+      transform: Transform.translate(0,0,0)
+    });
+    mod.sizeFrom(function(){
+      return [window.innerWidth, window.innerHeight - 56];
+    });
+    
+    var background = new Surface({
+      properties: {
+        //backgroundColor: 'white'   
+      }
+    });
+    background.pipe(this.listScrollview);
+    
+    this._add(mod).add(background);
   }
     
   function _createMetacode() {
@@ -73,6 +85,7 @@ define(function(require, exports, module) {
           padding: '22px 0'
         }
     });
+    this.metacodeSurface.pipe(this.listScrollview);
       
     var view = new View();
     var metacodeMod = new Modifier({
@@ -88,7 +101,6 @@ define(function(require, exports, module) {
     var self = this;
       
     this.titleSurface = new TextAreaSurface({
-        size: [window.innerWidth - 10, 42],
         dimensions: [1, 44],
         name: 'textareaSurface',
         placeholder: 'Add a title...',
@@ -105,6 +117,7 @@ define(function(require, exports, module) {
           color: '#4D4D4D'
         }
     });
+    this.titleSurface.pipe(this.listScrollview);  
       
     this.currentLineCount = 1;
     
@@ -120,6 +133,10 @@ define(function(require, exports, module) {
     var titleMod = new Modifier({
        origin: [0.5,0] 
     });
+    titleMod.sizeFrom(function(){
+      return [window.innerWidth - 32, 40];
+    })
+    
     view._add(titleMod).add(this.titleSurface);
     
     this.topicSurfaces.push(view);
@@ -136,6 +153,7 @@ define(function(require, exports, module) {
           borderBottom: '1px solid #BBB'
         }
     });
+    this.metadataSurface.pipe(this.listScrollview);
     
     this.topicSurfaces.push(this.metadataSurface);
   }
@@ -144,7 +162,6 @@ define(function(require, exports, module) {
     var self = this;
       
     this.descriptionSurface = new TextAreaSurface({
-        size: [window.innerWidth - 20, 100],
         name: 'textareaSurface',
         placeholder: 'Describe this topic...',
         value: '',
@@ -158,6 +175,7 @@ define(function(require, exports, module) {
           color: '#4D4D4D'
         }
     });
+    this.descriptionSurface.pipe(this.listScrollview);
     
     this.descriptionSurface.on('keyup', function() {
       self.activeTopic.set('description', this.getValue());
@@ -167,6 +185,10 @@ define(function(require, exports, module) {
     var descMod = new Modifier({
        origin: [0.5,0] 
     });
+    descMod.sizeFrom(function(){
+      return [window.innerWidth - 32, 100];
+    });
+    
     view._add(descMod).add(this.descriptionSurface);
     
     this.topicSurfaces.push(view);

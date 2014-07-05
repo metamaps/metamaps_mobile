@@ -54,6 +54,10 @@ define(function(require, exports, module) {
     //mainContext.add(centerSpinModifier).add(logo);
     mainContext.add(appView);
     
+    mainContext.on('resize', function(){
+        appView.options.height = mainContext.getSize()[1];
+    });
+    
     /*setTimeout(function() {
         centerSpinModifier.setTransform(Transform.identity);
         logo.setOptions({
