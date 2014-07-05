@@ -78,8 +78,8 @@ html {
 
 .list-icon {
     position: absolute;
-    top: 20px;
-    left: 5px;
+    top: 16px;
+    left: 16px;
     vertical-align: middle;
 }
 
@@ -88,18 +88,18 @@ html {
   width: 70%;
   text-overflow: ellipsis;
   overflow: hidden;
-  top: 10px;
-  left: 40px;
-  font-size: 1.4em;
-  font-weight: bold;
+  top: 16px;
+  left: 72px;
+  font-size: 16px;
   white-space: nowrap;
 }
 
 .list-type {
-    color: grey;
+    color: #999999;
     position: absolute;
-    left: 40px;
+    left: 72px;
     top: 40px;
+    font-size:14px;
 }
 
 .list-arrow {
