@@ -20,14 +20,17 @@ define(function(require, exports, module) {
     var Modifier = require('famous/core/Modifier');
     var Transform = require('famous/core/Transform');
     var Surface = require('famous/core/Surface');
+    
+    
     var AppView = require('views/AppView');
     var LoginView = require('views/LoginView');
     
 	var mainContext = Engine.createContext();
 
 	var appView = new AppView();
+	
 	var loginView = new LoginView();
-
+	
 	var test = navigator.userAgent.toLowerCase();
 	if (test.indexOf("android") > -1) {
 		mainContext.setPerspective(1000);

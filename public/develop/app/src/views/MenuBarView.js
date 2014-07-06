@@ -4,7 +4,7 @@ define(function(require, exports, module) {
     var Transform       = require('famous/core/Transform');
     var View            = require('famous/core/View');
 
-    function MenuBarView() {
+    function MenuBarView(options) {
         View.apply(this, arguments);
 
         _createMenu.call(this);
@@ -15,13 +15,14 @@ define(function(require, exports, module) {
     MenuBarView.prototype.constructor = MenuBarView;
 
     MenuBarView.DEFAULT_OPTIONS = {
-        duration: 200
+        duration: 200,
+        title: 'Maps'
     };
 
     function _createMenu() {
         
-        // stores whether the user has done everything they need to to create a topic
-        this.canCreate = false;
+        // stores whether the user has done everything they need to be able to confirm whatever they're trying to do
+        this.canConfirm = false;
         
         this.menuSurf = new Surface({
             size: [undefined, 56],
@@ -57,7 +58,7 @@ define(function(require, exports, module) {
         //title
         this.titleSurf = new Surface({
             size: [undefined, 28],
-            content: 'My Maps',
+            content: this.options.title,
             properties: {
                 fontFamily: 'robotomedium',
                 fontSize: '20px',
@@ -93,7 +94,7 @@ define(function(require, exports, module) {
         var self = this;
         
         this.xIconSurf.on('click', function() {
-            this.cancelAdd();
+            this.cancelation();
         }.bind(this));
         
         this.backIconSurf.on('click', function() {
@@ -101,18 +102,18 @@ define(function(require, exports, module) {
         }.bind(this));
         
         this.checkmarkIconSurf.on('click', function() {
-            this.addTopic();
+            this.confirmation();
         }.bind(this));
     }
     
     MenuBarView.prototype.enableCreate = function() {
-        if (!this.canCreate) this.showCheckIcon();
-        this.canCreate = true;
+        if (!this.canConfirm) this.showCheckIcon();
+        this.canConfirm = true;
     };
     
     MenuBarView.prototype.disableCreate = function() {
-        if (this.canCreate) this.hideCheckIcon();
-        this.canCreate = false;
+        if (this.canConfirm) this.hideCheckIcon();
+        this.canConfirm = false;
     };
     
     MenuBarView.prototype.showXIcon = function() {
@@ -168,22 +169,22 @@ define(function(require, exports, module) {
         this.checkmarkIconMod.setOpacity(0, paramOptions);
     };
     
-    MenuBarView.prototype.cancelAdd = function() {
+    MenuBarView.prototype.cancelation = function() {
         this.hideXIcon();
         this.hideCheckIcon();
         this.showBackIcon();
-        this._eventOutput.emit('cancelAdd');
+        this._eventOutput.emit('cancelation');
     }
     
-    MenuBarView.prototype.addTopic = function() {
-        if (this.canCreate) {
+    MenuBarView.prototype.confirmation = function() {
+        if (this.canConfirm) {
             this.hideXIcon();
             this.hideCheckIcon();
             this.showBackIcon();
-            this._eventOutput.emit('addTopic');
+            this._eventOutput.emit('confirmation');
         }
         else {
-            console.log('unable to create yet');
+            console.log('unable to take this action yet');
         }
     }
 

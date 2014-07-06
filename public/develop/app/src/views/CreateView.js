@@ -558,6 +558,8 @@ define(function(require, exports, module) {
             duration: this.options.duration - 100,
             curve: 'easeInOut'
         });
+        
+        this.inputSurf.focus();
     }
 
     CreateView.prototype.reset = function() {
@@ -593,6 +595,7 @@ define(function(require, exports, module) {
         this._eventOutput.emit('cantCreateTopic');
     }
 
+    /* function deprecated */
     CreateView.prototype.selectMetacode = function(modIndex, type, text) {
         this.inputSurf.setPlaceholder(text);
         if (this.inputValue !== "") {
