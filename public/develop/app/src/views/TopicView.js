@@ -3,7 +3,7 @@ define(function(require, exports, module) {
   var Modifier = require('famous/core/Modifier');
   var Transform = require('famous/core/Transform');
   var View = require('famous/core/View');
-  var TextAreaSurface = require('surfaces/TextAreaSurface');
+  var TextareaSurface = require('famous/surfaces/TextareaSurface');
 
   var Scrollview = require('famous/views/Scrollview');
   var MenuBarView = require('views/MenuBarView');
@@ -121,8 +121,9 @@ define(function(require, exports, module) {
   function _createTitle() {
     var self = this;
 
-    this.titleSurface = new TextAreaSurface({
-      dimensions: [1, 44],
+    this.titleSurface = new TextareaSurface({
+      rows: 1,
+      cols: 44,
       name: 'textareaSurface',
       placeholder: 'Add a title...',
       value: '',
@@ -182,7 +183,7 @@ define(function(require, exports, module) {
   function _createDescription() {
     var self = this;
 
-    this.descriptionSurface = new TextAreaSurface({
+    this.descriptionSurface = new TextareaSurface({
       name: 'textareaSurface',
       placeholder: 'Describe this topic...',
       value: '',

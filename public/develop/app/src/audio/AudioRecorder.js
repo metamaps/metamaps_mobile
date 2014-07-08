@@ -6,16 +6,10 @@ define(function(require, exports, module) {
             realAudioInput  = null,
             inputPoint      = null,
             core            = Recorder,
-            rafID           = null;
+            rafID           = null,
+            stream          = null;
             
     var initAudio = function() {
-        
-        if (navigator.getUserMedia) {
-            navigator.getUserMedia({audio:true}, gotStream, function(e) {
-                alert('Error getting audio');
-                console.log(e);
-            });
-        }
         
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         
@@ -36,6 +30,13 @@ define(function(require, exports, module) {
 
     var start = function() {
         
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({audio:true}, gotStream, function(e) {
+                alert('Error getting audio');
+                console.log(e);
+            });
+        }
+        
         if (audioContext === null) initAudio();
         
         core.clear();
@@ -43,6 +44,7 @@ define(function(require, exports, module) {
     };
     
     var stop = function(done) {
+        stream.stop();
         core.stop();
         core.getBuffer(function(buff) {
             saveAudio(buff, done);
@@ -72,10 +74,12 @@ define(function(require, exports, module) {
         audioInput.connect(inputPoint);
     };
 
-    var gotStream = function(stream) {
+    var gotStream = function(str) {
+        
+        stream = str;
         
         // Create an AudioNode from the stream.
-        realAudioInput = audioContext.createMediaStreamSource(stream);
+        realAudioInput = audioContext.createMediaStreamSource(str);
         audioInput = realAudioInput;
         audioInput.connect(inputPoint);
 

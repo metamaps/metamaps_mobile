@@ -78,6 +78,11 @@ define(function(require, exports, module) {
     }));
   }
 
+  ListView.prototype.reset = function() {
+    this.listSurfaces = [];
+    this.listScrollview.sequenceFrom(this.listSurfaces);
+  }
+  
   ListView.prototype.removeMap = function(map) {
     var surface = map.get('listSurface');
     var index = _.indexOf(this.listSurfaces, surface);

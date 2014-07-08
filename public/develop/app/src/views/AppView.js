@@ -79,7 +79,19 @@ define(function(require, exports, module) {
 
         var TopicCollection = Backbone.Collection.extend({
             model: this.Topic,
-            url: '/topics'
+            url: '/topics',
+            comparator: function(a, b) {
+                a = a.get('name').toLowerCase();
+                b = b.get('name').toLowerCase();
+                return a > b ?  1
+                     : a < b ? -1
+                     :          0;
+            },
+            render: function() {
+                _.each(this.models, function(topic){
+                   self.topicListView.addTopic(topic); 
+                });
+            }
         });
 
         this.Map = Backbone.Model.extend({
@@ -88,27 +100,38 @@ define(function(require, exports, module) {
 
         var MapCollection = Backbone.Collection.extend({
             model: this.Map,
-            url: '/maps'
+            url: '/maps',
+            comparator: function(a, b) {
+                a = a.get('name').toLowerCase();
+                b = b.get('name').toLowerCase();
+                return a > b ?  1
+                     : a < b ? -1
+                     :          0;
+            },
+            render: function() {
+                _.each(this.models, function(map){
+                   self.mapListView.addMap(map); 
+                });
+            }
         });
 
         this.maps = new MapCollection();
+        
+        this.maps.on("reset sort", function() {
+            self.mapListView.reset();
+            this.render();
+        });
 
         this.maps.on("add", function(map) {
 
             // initialize the topic collection
             var topics = new TopicCollection();
+            topics.on("reset sort", function() {
+                self.topicListView.reset();
+                this.render();
+            });
             map.set('topics', topics);
-
-            // add it to the listView    
-            self.mapListView.addMap(map);
         });
-
-        this.maps.on("remove", function(map) {
-            self.mapListView.removeMap(map);
-        });
-
-        this.maps.fetch();
-
 
         /*
         this is the json for a 'mapping'
@@ -280,6 +303,16 @@ define(function(require, exports, module) {
         this.plusView.on('openCreateTopic', this.slideCreateTopicDown.bind(this));
         this.plusView.on('openCreateSynapse', this.slideCreateSynapseDown.bind(this));
     }
+    
+    AppView.prototype.getMyMaps = function() {
+        $.ajax({
+            url: "/maps/mine.json",
+            success: function(results) {
+                this.maps.add(results);
+                this.maps.sort(); // this line also results in rendering
+            }.bind(this)
+        });
+    }
 
     AppView.prototype.goBack = function() {
         if (this.currentPage === 'TopicListPage') {
@@ -307,27 +340,25 @@ define(function(require, exports, module) {
     AppView.prototype.showTopicList = function(map) {
         var self = this;
 
+        this.topicListView.reset();
+
         if (map) {
             this.activeMap = map;
             var topics = map.get('topics');
 
-            // reset the topic list view
-            this.topicListView.reset.call(this.topicListView);
-
-            // get topics
-            $.ajax({
-                url: "/maps/" + map.id + ".json",
-                success: function(results) {
-                    _.each(results, function(topic) {
-                        var t = new this.Topic(topic);
-
-                        // add to the collection of topics for the map
-                        topics.add(t);
-                        // add to the topic list view
-                        this.topicListView.addTopic(t);
-                    }.bind(self));
-                }
-            });
+            if (topics.models.length === 0) {
+                // get topics
+                $.ajax({
+                    url: "/maps/" + map.id + ".json",
+                    success: function(results) {
+                        topics.add(results);
+                        topics.sort(); // this line also results in rendering
+                    }
+                });
+            }
+            else {
+                topics.render();
+            }
         }
 
         this.edgeSwapper.show(this.topicListContainerView);
@@ -443,7 +474,7 @@ define(function(require, exports, module) {
         var activeMapTopics = this.activeMap.get('topics');
         // this line adds it to the backbone topic collection
         activeMapTopics.add(topic);
-        this.topicListView.addTopic(topic);
+        activeMapTopics.sort();
 
         this.slideCreateUp.call(this, function() {
             this.showSingleTopic(topic);

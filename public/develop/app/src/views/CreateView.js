@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     var Time = require('famous/utilities/Timer');
     var ImageSurface = require('famous/surfaces/ImageSurface');
     var InputSurface = require('famous/surfaces/InputSurface');
-    var TextAreaSurface = require('surfaces/TextAreaSurface');
+    var TextareaSurface = require('famous/surfaces/TextareaSurface');
     var MediaInputSurface = require('surfaces/MediaInputSurface');
     var AudioRecorder = require('audio/AudioRecorder');
 
@@ -68,7 +68,7 @@ define(function(require, exports, module) {
         var self = this;
         this.inputValue = "";
 
-        this.inputSurf = new TextAreaSurface({
+        this.inputSurf = new TextareaSurface({
             name: 'inputSurface',
             placeholder: "Name it!",
             value: '',

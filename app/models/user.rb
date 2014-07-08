@@ -9,9 +9,20 @@ has_many :mappings
 
   devise :database_authenticatable, :rememberable, :trackable
   
-  attr_accessible :name, :email, :password, :password_confirmation, :code, :joinedwithcode, :remember_me
+  attr_accessible :name, :email, :image, :password, :password_confirmation, :code, :joinedwithcode, :remember_me
 
   serialize :settings, UserPreference
+  
+  # This method associates the attribute ":image" with a file attachment
+  has_attached_file :image, :styles => {
+   :thumb => ['100x100>', :png],
+   :square => ['200x200#', :png],
+   :round => ['200x200#', :png]
+  }
+  
+  def info
+    Hash["user", Hash["name", self.name, "id", self.id, "image", self.image.url]]
+  end
   
   def settings
     # make sure we always return a UserPreference instance

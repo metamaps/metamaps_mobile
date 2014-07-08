@@ -1,4 +1,29 @@
 class MapsController < ApplicationController
+  
+  
+  # GET /maps/mine.json
+  def mine
+    @user = current_user
+    
+    @maps = @user.maps
+
+    respond_to do |format|
+      format.json { render json: @maps }
+    end
+  end
+  
+  # GET /maps/recent.json
+  def recent
+    @user = current_user
+    
+    @maps = @user.maps
+
+    respond_to do |format|
+      format.json { render json: @maps }
+    end
+  end
+  
+  
   # GET /maps.json
   def index
     @maps = Map.all
