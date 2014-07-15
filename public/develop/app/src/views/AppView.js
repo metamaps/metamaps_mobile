@@ -299,9 +299,7 @@ define(function(require, exports, module) {
         
         this.singleTopicView.on('goBack', this.goBack.bind(this));
         
-        this.plusView.on('openCreateMap', this.slideCreateMapDown.bind(this));
         this.plusView.on('openCreateTopic', this.slideCreateTopicDown.bind(this));
-        this.plusView.on('openCreateSynapse', this.slideCreateSynapseDown.bind(this));
     }
     
     AppView.prototype.getMyMaps = function() {
@@ -327,9 +325,8 @@ define(function(require, exports, module) {
     AppView.prototype.showMapList = function() {
         this.edgeSwapper.show(this.mapListContainerView);
 
-        this.plusView.map();
-        //this.plusMod.setOpacity(0);
-        //this.plusMod.setTransform(Transform.translate(0,0,-1));
+        this.plusMod.setOpacity(0);
+        this.plusMod.setTransform(Transform.translate(0,0,-1));
 
         this.menuBarView.hideBackIcon();
         this.currentPage = 'MapListPage';
@@ -363,9 +360,8 @@ define(function(require, exports, module) {
 
         this.edgeSwapper.show(this.topicListContainerView);
 
-        this.plusView.topic();
-        //this.plusMod.setTransform(Transform.translate(0,0,2));
-        //this.plusMod.setOpacity(1, this.options.transition);
+        this.plusMod.setTransform(Transform.translate(0,0,2));
+        this.plusMod.setOpacity(1, this.options.transition);
 
         this.menuBarView.showBackIcon();
         this.currentPage = 'TopicListPage';
@@ -387,7 +383,8 @@ define(function(require, exports, module) {
         this.singleTopicMod.setTransform(big, {duration: 200, curve: 'easeIn' });
         this.singleTopicMod.setOpacity(1, { duration: 200 });
         
-        this.plusView.synapse();
+        this.plusMod.setOpacity(0);
+        this.plusMod.setTransform(Transform.translate(0,0,-1));
         this.currentPage = 'TopicPage';
     }
     
@@ -400,7 +397,8 @@ define(function(require, exports, module) {
             this.singleTopicMod.setSize([0, 0]);
         }.bind(this));
 
-        this.plusView.topic();
+        this.plusMod.setTransform(Transform.translate(0,0,2));
+        this.plusMod.setOpacity(1, this.options.transition);
         this.currentPage = 'TopicListPage';
     }
 
@@ -416,25 +414,17 @@ define(function(require, exports, module) {
         this.createMod.setOpacity(0, this.options.transition);
     }
 
-    AppView.prototype.slideCreateMapDown = function() {
-
-    }
-
     AppView.prototype.slideCreateTopicDown = function() {
         this.createMod.setOpacity(1);
         this.edgeSwapperMod.setTransform(Transform.translate(0, this.options.height, 0), this.options.transition);
         this.plusMod.setOpacity(0);
-        this.plusMod.setTransform(Transform.translate(0, 0, - 2));
+        this.plusMod.setTransform(Transform.translate(0, 0, -2));
 
         this.menuBarView.showXIcon();
 
         this.createView.animate();
         this.storeTitle = this.menuBarView.titleSurf.getContent();
         this.menuBarView.titleSurf.setContent('Add New Topic');
-    }
-
-    AppView.prototype.slideCreateSynapseDown = function() {
-
     }
 
 

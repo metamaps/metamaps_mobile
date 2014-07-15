@@ -21,15 +21,12 @@ define(function(require, exports, module) {
 
 	function _createPlus() {
 
-		this.state = "Map";
 
-		this.addMapContent = '<img height="56" width="56" src="content/images/MetamapsAddMap.png"/>';
 		this.addTopicContent = '<img height="56" width="56" src="content/images/MetamapsAddTopic.png"/>';
-		this.addSynapseContent = '<img height="56" width="56" src="content/images/MetamapsAddSynapse.png"/>';
 
 		this.plusSurf = new Surface({
 			size: [56, 56],
-			content: this.addMapContent,
+			content: this.addTopicContent,
 			properties: {
 				boxShadow: 'rgba(0, 0, 0, 0.75) 1px 1px 5px',
 				borderRadius: '28px'
@@ -43,23 +40,8 @@ define(function(require, exports, module) {
 
 	function _setListeners() {
 		this.plusSurf.on('click', function() {
-			this._eventOutput.emit('openCreate' + this.state);
+			this._eventOutput.emit('openCreateTopic');
 		}.bind(this));
-	}
-
-	PlusView.prototype.map = function() {
-		this.state = "Map";
-		this.plusSurf.setContent(this.addMapContent);
-	}
-
-	PlusView.prototype.topic = function() {
-		this.state = "Topic";
-		this.plusSurf.setContent(this.addTopicContent);
-	}
-
-	PlusView.prototype.synapse = function() {
-		this.state = "Synapse";
-		this.plusSurf.setContent(this.addSynapseContent);
 	}
 
 	module.exports = PlusView;

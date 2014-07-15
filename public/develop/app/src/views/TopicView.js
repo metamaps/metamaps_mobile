@@ -230,10 +230,12 @@ define(function(require, exports, module) {
     this.activeTopic = topic;
 
     var metacode = this.app.metacodes.get(topic.get('metacode_id'));
+    var imageUrl = metacode.get('icon').indexOf('http') !== -1 ? metacode.get('icon') : 'content/images' + metacode.get('icon');
+
 
     this.menuBarView.titleSurf.setContent(metacode.get('name'));
 
-    this.metacodeSurface.setContent('<img width="96" src="content/images/' + metacode.get('icon') + '" />');
+    this.metacodeSurface.setContent('<img width="96" src="' + imageUrl + '" />');
 
     this.titleSurface.setValue(topic.get('name'));
 

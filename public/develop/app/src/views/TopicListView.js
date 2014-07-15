@@ -51,9 +51,11 @@ define(function(require, exports, module) {
     function viewTemplate(topic) {
       var content;
       var metacode = self.app.metacodes.get(topic.get('metacode_id'));
+      
+      var imageUrl = metacode.get('icon').indexOf('http') !== -1 ? metacode.get('icon') : 'content/images' + metacode.get('icon');
 
       content = '<div class="list-item">'
-      content += '<img class="list-icon" width="40" src="content/images' + metacode.get('icon') + '" />';
+      content += '<img class="list-icon" width="40" src="' + imageUrl + '" />';
       content += '<div class="list-subject">' + topic.get('name') + '</div>';
       content += '<span class="list-type">' + metacode.get('name') + '</span>';
       content += '</div>';
