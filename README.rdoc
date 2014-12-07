@@ -1,3 +1,6 @@
+!! Notice !!
+This code and documentation is out of date, and not in a stable date. Both will be updated soon for clarity and functionality.
+
 == Metamaps Mobile!
 
 While in cloud9
