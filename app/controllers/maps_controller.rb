@@ -38,6 +38,15 @@ class MapsController < ApplicationController
     @map = Map.find(params[:id])
 
     respond_to do |format|
+      format.json { render json: @map }
+    end
+  end
+  
+  # GET /maps/1/topics.json
+  def topics
+    @map = Map.find(params[:id])
+
+    respond_to do |format|
       format.json { render json: @map.topics }
     end
   end

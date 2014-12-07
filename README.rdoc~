@@ -46,6 +46,10 @@ http://mm-famous.herokuapp.com/
 END
 
 
+connor's notes to self
+heroku config:add DATABASE_URL=postgres://tuwkjxqeyazkuj:kYd8RwJyOmybL_SGy7cV6Fh8xf@ec2-54-243-194-227.compute-1.amazonaws.com:5432/d1o331hk10a4g1 --app mm-famous
+
+
 == Metamaps
 Metamaps is a free and open source technology for changemakers, innovators, educators and students. It enables individuals and communities to build and visualize their shared knowledge and unlock their collective intelligence. You can find out about more about the project at http://blog.metamaps.cc.
 

@@ -12,10 +12,13 @@ ISSAD::Application.routes.draw do
   
   match '/maps/mine', to: 'maps#mine', via: :get, as: :mine
   match '/maps/recent', to: 'maps#recent', via: :get, as: :recent
+  match '/maps/:id/topics', to: 'maps#topics', via: :get, as: :topics
   resources :maps, :constraints => {:format => /(json)/}
   resources :topics, :constraints => {:format => /(json)/}
   resources :synapses, :constraints => {:format => /(json)/}
   resources :mappings, :constraints => {:format => /(json)/}
   resources :metacodes, :constraints => {:format => /(json)/}
+  resources :metacode_sets, :only => [:show], :constraints => {:format => /(json)/}
+  match '/metacode_sets/:id/metacodes', to: 'metacode_sets#metacodes', via: :get, as: :metacodes
   
 end

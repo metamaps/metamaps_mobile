@@ -5,6 +5,8 @@ define(function(require, exports, module) {
   var View = require('famous/core/View');
 
   var Scrollview = require('famous/views/Scrollview');
+  var TopicCardView = require('views/TopicCardView');
+
 
   function TopicListView(app) {
     View.apply(this, arguments);
@@ -24,13 +26,15 @@ define(function(require, exports, module) {
 
   function _createList() {
 
-    this.listSurfaces = [];
+    this.listItems = [new Surface({
+      size: [undefined, 8]
+    })];
 
     this.listScrollview = new Scrollview({
       //speedLimit: 2.5,
       edgeGrip: 0.05
     });
-    this.listScrollview.sequenceFrom(this.listSurfaces);
+    this.listScrollview.sequenceFrom(this.listItems);
 
     var listScrollMod = new Modifier();
     listScrollMod.sizeFrom(function(){
@@ -41,67 +45,21 @@ define(function(require, exports, module) {
   }
 
   TopicListView.prototype.reset = function() {
-    this.listSurfaces = [];
-    this.listScrollview.sequenceFrom(this.listSurfaces);
+    this.listItems = [new Surface({
+      size: [undefined, 8]
+    })];
+    this.listScrollview.sequenceFrom(this.listItems);
   }
 
   TopicListView.prototype.addTopic = function(topic) {
-    var self = this;
-    
-    function viewTemplate(topic) {
-      var content;
-      var metacode = self.app.metacodes.get(topic.get('metacode_id'));
-      
-      var imageUrl = metacode.get('icon').indexOf('http') !== -1 ? metacode.get('icon') : 'content/images' + metacode.get('icon');
-
-      content = '<div class="list-item">'
-      content += '<img class="list-icon" width="40" src="' + imageUrl + '" />';
-      content += '<div class="list-subject">' + topic.get('name') + '</div>';
-      content += '<span class="list-type">' + metacode.get('name') + '</span>';
-      content += '</div>';
-      return content;
-    }
-
-    var contentSurf = new Surface({
-      size: [undefined, this.options.listItemHeight],
-      content: viewTemplate(topic),
-      properties: {
-        background: 'white',
-        color: 'black'
-      }
-    });
-    topic.set('listSurface', contentSurf);
-
-    topic.on('change:title', function(topic, title) {
-      topic.get('listSurface').setContent(viewTemplate(topic));
-    });
-    topic.on('change:metacode', function(topic, metacode) {
-      topic.get('listSurface').setContent(viewTemplate(topic));
-    });
-
-    contentSurf.topic = topic;
-
-    contentSurf.pipe(this.listScrollview);
-
-    contentSurf.on('click', function() {
-      self.app.showSingleTopic(this.topic);
-    });
-
-    this.listSurfaces.push(contentSurf);
-    this.listSurfaces.push(new Surface({
-      size: [window.innerWidth - 72, 1],
-      properties: {
-        borderTop: '1px solid rgba(0,0,0,0.08)',
-        marginLeft: '72px'
-      }
-    }));
+    this.listItems.push(new TopicCardView(topic, this.listScrollview, this.app));
   }
 
   TopicListView.prototype.removeTopic = function(topic) {
-    var surface = topic.get('listSurface');
-    var index = _.indexOf(this.listSurfaces, surface);
+    var topicCardView = topic.get('listItem');
+    var index = _.indexOf(this.listItems, topicCardView);
     // remove the surface from the array that is populating the TopicListView
-    this.listSurfaces.splice(index, 2);
+    this.listItems.splice(index, 1);
   }
 
   module.exports = TopicListView;

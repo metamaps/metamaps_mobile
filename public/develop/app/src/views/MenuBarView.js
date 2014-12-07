@@ -27,7 +27,7 @@ define(function(require, exports, module) {
         this.menuSurf = new Surface({
             size: [undefined, 56],
             properties: {
-                backgroundColor: '#FAFAFA',
+                backgroundColor: '#009688', // #FAFAFA greyish white
                 boxShadow: 'rgba(0, 0, 0, 0.3) 0px 1px 5px'
             }
         });
@@ -62,7 +62,7 @@ define(function(require, exports, module) {
             properties: {
                 fontFamily: 'robotomedium',
                 fontSize: '20px',
-                color: '#4D4D4D',
+                color: '#FFF', //#4D4D4D
                 textAlign: 'left'
             }
         });

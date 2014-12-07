@@ -22,6 +22,7 @@ define(function(require, exports, module) {
         _createMapListContainerView.call(this);
         _createBackbone.call(this);
 
+        _createBackground.call(this);
         _createMenuBarView.call(this);
         _createCreateView.call(this);
         _createEdgeSwapperView.call(this);
@@ -159,6 +160,21 @@ define(function(require, exports, module) {
                 });
             }
         });
+    }
+
+    function _createBackground() {
+        var background = new Surface({
+            properties: {
+                background: '#EBEBEB'
+            }
+        });
+        
+        var backgroundMod = new Modifier({
+            size: [undefined, undefined],
+            transform: Transform.translate(0, 0, -1)
+        });
+        
+        this._add(backgroundMod).add(background);
     }
 
     function _createMenuBarView() {
@@ -346,7 +362,7 @@ define(function(require, exports, module) {
             if (topics.models.length === 0) {
                 // get topics
                 $.ajax({
-                    url: "/maps/" + map.id + ".json",
+                    url: "/maps/" + map.id + "/topics.json",
                     success: function(results) {
                         topics.add(results);
                         topics.sort(); // this line also results in rendering
